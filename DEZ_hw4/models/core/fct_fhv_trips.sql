@@ -6,7 +6,7 @@
 
 with fhv_tripdata as (
     select *
-    from {{ ref('stg_fhv_tripdata') }}
+    from {{ ref('stg_fhv_trips') }}
 ), 
 dim_zones as (
     select * from {{ ref('dim_zones') }}
