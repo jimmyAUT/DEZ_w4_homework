@@ -83,7 +83,7 @@ would compile as
 
 ```sql
 select * 
-from `myproject.my_nyc_tripdata.ext_green_taxi`
+from `myproject.raw_nyc_tripdata.ext_green_taxi`
 ```
 
 ---
