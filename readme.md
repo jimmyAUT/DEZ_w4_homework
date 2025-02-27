@@ -54,7 +54,7 @@ SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-12_tripdata_ext`;'
 ===
 
 Q1:
-**Ans:select * select * from myproject.raw_nyc_tripdata.ext_green_taxi**   
+**Ans:select * from myproject.raw_nyc_tripdata.ext_green_taxi**   
 When DBT is executed, it tries to read env variable in order:
 
 1. Reading environment variables from Shell/Terminal
