@@ -10,7 +10,7 @@
 
 ## Project DAG
 
-![DAG](/home/vice/DEZ/homework/DEZ_w4_homework/dbt-dag.png)
+![DAG](dbt-dag.png)
 
 ===
 ## Install dbt core and connect with BigQuery
