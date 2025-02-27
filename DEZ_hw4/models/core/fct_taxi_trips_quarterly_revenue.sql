@@ -1,4 +1,8 @@
-{{ config(materialized='table') }}
+{{
+    config(
+        materialized='table'
+    )
+}}
 
 with trips_data as (
     select *, 
@@ -27,22 +31,24 @@ quarterly_revenue as (
     
     from trips_data
     group by 1, 2, 3, 4, 5
+),
+
+final_quarterly_revenue AS (
+    SELECT 
+        *,
+        LAG(revenue_quarterly_total_amount, 4) OVER (
+            PARTITION BY revenue_zone, service_type
+            ORDER BY year, quarter
+        ) AS prev_year_revenue
+    FROM quarterly_revenue
 )
 
     SELECT 
-        service_type,
+        service_type, revenue_zone, year, quarter, revenue_quarterly_total_amount, prev_year_revenue,
         CASE 
             WHEN prev_year_revenue IS NOT NULL AND prev_year_revenue > 0
             THEN ((revenue_quarterly_total_amount - prev_year_revenue) / prev_year_revenue) * 100
             ELSE NULL 
         END AS yoy_growth_percentage
-    FROM (
-        SELECT 
-            *,
-            LAG(revenue_quarterly_total_amount, 4) OVER (PARTITION BY service_type, revenue_zone ORDER BY year, quarter) AS prev_year_revenue
-        FROM 
-            quarterly_revenue
-        GROUP BY service_type
-    ) AS subquery
-    ORDER BY 
-        year, quarter;
+    FROM final_quarterly_revenue
+    ORDER BY year, quarter, service_type, revenue_zone

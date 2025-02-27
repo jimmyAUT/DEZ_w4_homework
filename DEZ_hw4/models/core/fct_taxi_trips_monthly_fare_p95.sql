@@ -14,6 +14,7 @@ with valid_trips as (
         service_type,
         revenue_year,
         revenue_month,
+        pickup_zone,
         fare_amount,
         ROUND(percentile_cont(fare_amount, 0.90) OVER (PARTITION BY service_type, revenue_year, revenue_month),2) AS fare_p90,
         ROUND(percentile_cont(fare_amount, 0.95) OVER (PARTITION BY service_type, revenue_year, revenue_month),2) AS fare_p95,
