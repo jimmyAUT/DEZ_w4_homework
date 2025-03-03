@@ -60,11 +60,11 @@ SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-12_tripdata_ext`;'
 ===
 
 ## 1. Staging Layer (stg_)
-🔹 Purpose: Clean up raw data, unify data types, and perform basic conversions
+🔹 Purpose: Clean up raw data, unify data types, and perform basic conversions  
 🔹 Main logic:  
-    Remove null values ​​and erroneous data
-    Unify data formats (e.g. time conversion)
-    Connect to taxi_zone_lookup to get zone information
+    Remove null values ​​and erroneous data.  
+    Unify data formats (e.g. time conversion).  
+    Connect to taxi_zone_lookup to get zone information.  
 
  DBT Model:  
  - [stg_yellow_trips.sql](DEZ_hw4/models/staging/stg_yellow_tripdata.sql)
@@ -74,11 +74,11 @@ SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-12_tripdata_ext`;'
 ===
 
 2. Core Layer (fct_)
-🔹 Purpose: Integrate different data sources and calculate business indicators
+🔹 Purpose: Integrate different data sources and calculate business indicators  
 🔹 Main logic:  
-    Merge Yellow, Green, and FHV data
-    Calculate trip duration, cost, and quarterly revenue
-    Convert time fields for easy analysis (year, month, quarter)
+    Merge Yellow, Green, and FHV data.  
+    Calculate trip duration, cost, and quarterly revenue.  
+    Convert time fields for easy analysis (year, month, quarter).  
 
 DBT Model:
 - [dim_zones.sql](DEZ_hw4/models/core/dim_zones.sql)  
