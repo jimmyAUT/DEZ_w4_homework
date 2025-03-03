@@ -73,7 +73,7 @@ SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-12_tripdata_ext`;'
 
 ===
 
-2. Core Layer (fct_)
+## 2. Core Layer (fct_)  
 🔹 Purpose: Integrate different data sources and calculate business indicators  
 🔹 Main logic:  
     Merge Yellow, Green, and FHV data.  
