@@ -1,18 +1,24 @@
-# This project utilize DBT core for NY_taxi dataset ELT process to GCP BigQuery
+# The goal of this project is to perform ETL (Extract, Transform, Load) on NYC Taxi data and ultimately establish a data model that can be used for business analysis.
+
+## Data flow
+
+1. Extract → Read raw data from Google Cloud Storage (GCS) or BigQuery.
+2. Load → Store raw data in BigQuery’s external tables.
+3. Use DBT for data modeling and organize data into Staging ➝ Core models.
+4. Deliver → Final data is used by BI tools (Looker, Power BI) or downstream applications.
+
 
 ===
 
 ## Dataset used
 
-- [Green Taxi dataset (2019 and 2020)](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/green)
-- [Yellow Taxi dataset (2019 and 2020)](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/yellow)
-- [For Hire Vehicle dataset (2019)](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/fhv) 
-
-## Project DAG
-
-![DAG](dbt-dag.png)
+- [Green Taxi dataset (2019 and 2020), 7,778,101 records](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/green)
+- [Yellow Taxi dataset (2019 and 2020), 109,047,518 records](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/yellow)
+- [For Hire Vehicle dataset (2019), 43,244,696 records](https://github.com/DataTalksClub/nyc-tlc-data/releases/tag/fhv) 
+- [Location Lookup Zone, 265 records](DEZ_hw4/seeds/taxi_zone_lookup.csv)
 
 ===
+
 ## Install dbt core and connect with BigQuery
 
 ```bash
@@ -50,6 +56,44 @@ SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-11_tripdata_ext`
 UNION ALL
 SELECT * FROM `dez-jimmyh.w2_kestra_dataset.green_2020-12_tripdata_ext`;'
 ```
+
+===
+
+## 1. Staging Layer (stg_)
+🔹 Purpose: Clean up raw data, unify data types, and perform basic conversions
+🔹 Main logic:  
+    Remove null values ​​and erroneous data
+    Unify data formats (e.g. time conversion)
+    Connect to taxi_zone_lookup to get zone information
+
+ DBT Model:  
+ - [stg_yellow_trips.sql](DEZ_hw4/models/staging/stg_yellow_tripdata.sql)
+ - [stg_green_tripdata.sql](DEZ_hw4/models/staging/stg_green_tripdata.sql)
+ - [stg_fhv_trips.sql](DEZ_hw4/models/staging/stg_fhv_trips.sql)
+
+===
+
+2. Core Layer (fct_)
+🔹 Purpose: Integrate different data sources and calculate business indicators
+🔹 Main logic:  
+    Merge Yellow, Green, and FHV data
+    Calculate trip duration, cost, and quarterly revenue
+    Convert time fields for easy analysis (year, month, quarter)
+
+DBT Model:
+- [dim_zones.sql](DEZ_hw4/models/core/dim_zones.sql)  
+- [fct_trips.sql](DEZ_hw4/models/core/fct_trips.sql)
+- [fct_monthly_zone_revenue.sql](DEZ_hw4/models/core/fct_monthly_zone_revenue.sql)
+ -[fct_taxi_trips_monthly_fare_p95.sql](DEZ_hw4/models/core/fct_taxi_trips_monthly_fare_p95.sql)
+- [fct_taxi_trips_quarterly_revenue.sql](DEZ_hw4/models/core/fct_taxi_trips_quarterly_revenue.sql)
+- [fct_fhv_trips.sql](DEZ_hw4/models/core/fct_fhv_trips.sql)
+- [fct_fhv_monthly_zone_traveltime_p90.sql](DEZ_hw4/models/core/fct_fhv_monthly_zone_traveltime_p90.sql)
+
+===
+
+## Project DAG
+
+![DAG](dbt-dag.png)
 
 ===
 
